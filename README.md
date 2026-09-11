@@ -17,7 +17,7 @@
 
 ## 🌐 Live Demo
 
-**Live App:** `YOUR_LIVE_DEMO_LINK`  
+**Live App:** `[YOUR_LIVE_DEMO_LINK](https://egyptian-house-predictor.vercel.app/)`  
 **Google Colab:** `YOUR_COLAB_LINK`
 
 ## 📸 App Preview
