@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: egyptian-house-price-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT app:app
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+
+staticSites:
+  - name: egyptian-house-price-frontend
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    publishPath: ./dist
+    envVars:
+      - key: VITE_API_BASE
+        value: https://egyptian-house-price-api.onrender.com/api

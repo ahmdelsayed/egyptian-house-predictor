@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 92" role="img" aria-labelledby="title desc">
+  <title id="title">Mountain View Egypt</title>
+  <desc id="desc">Mountain View Egypt logo</desc>
+  <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 7c-5 15-3 26 5 34 8 8 14 17 11 31-3 13-16 17-27 11-13-7-19-25-11-38 5-8 13-13 22-15" stroke-width="4"/>
+    <path d="M40 7c8 12 8 22 2 31-6 9-8 19-2 28 6 9 17 10 25 3 8-7 9-18 3-26-5-7-12-11-20-12" stroke-width="4"/>
+    <path d="M38 45c-10 1-17 7-18 15-1 8 5 14 13 14M48 46c11 1 18 7 19 15 1 8-5 14-13 14" stroke-width="3"/>
+    <path d="M40 34v42M31 56c-7 3-10 8-9 14M49 56c7 3 10 8 9 14" stroke-width="2.5"/>
+  </g>
+  <text x="94" y="60" fill="#fff" font-family="Georgia, Times New Roman, serif" font-size="39" font-weight="400" letter-spacing="1">MOUNTAIN VIEW</text>
+</svg>
