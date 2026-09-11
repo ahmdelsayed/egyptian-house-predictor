@@ -1,164 +1,375 @@
-# Egyptian House Price Predictor
+# 🏠 Egyptian House Price Predictor
 
-A small full-stack app that estimates a listing price for a property in
-Egypt, built on top of a Random Forest model trained on real Egyptian
-real-estate listings.
+<p align="center">
+  <b>Machine Learning • React • Flask • REST API</b><br>
+  Estimate Egyptian property listing prices from real-world data.
+</p>
 
-## Project idea
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.x-blue?logo=python" alt="Python">
+  <img src="https://img.shields.io/badge/React-Vite-61DAFB?logo=react" alt="React">
+  <img src="https://img.shields.io/badge/Flask-REST%20API-black?logo=flask" alt="Flask">
+  <img src="https://img.shields.io/badge/Scikit--learn-ML-F7931E?logo=scikitlearn" alt="Scikit-learn">
+  <img src="https://img.shields.io/badge/Model-Random%20Forest-2E8B57" alt="Random Forest">
+</p>
 
-Estimate the expected listing price of a property in Egypt from a few
-details a user can enter easily: location, property type, area, bedrooms,
-and bathrooms. This is an **estimated listing price**, not an official
-property valuation.
+---
 
-## Dataset
+## 🌐 Live Demo
 
-- Source: [Egyptian Real Estate Listings, Kaggle](https://www.kaggle.com/)
-  (see the Colab notebook for the exact dataset link used).
-- Target: `price`.
+**Live App:** `YOUR_LIVE_DEMO_LINK`  
+**Google Colab:** `YOUR_COLAB_LINK`
 
-## Data cleaning
+## 📸 App Preview
 
-- Dropped rows with a missing `price` (can't train on an unknown target).
-- Removed the `url` column (not useful for prediction).
-- `price` was stored as text with commas (e.g. `"1,200,000"`) — stripped
-  commas and converted to float.
-- `size` was a free-text field like `"Delivery in 2025 / 150 sqm"` —
-  extracted the numeric sqm value into a new `size_sqm` column and
-  dropped the original.
-- `bedrooms` was text like `"3 Bedrooms"` — extracted the digit and
-  converted to numeric; missing values filled with the **median**
-  (chosen over the mean because a few very large villas would otherwise
-  skew the fill value).
-- `bathrooms` coerced to numeric, missing values filled with the median.
-- `available_from` parsed into a real date, then split into
-  year/month/day features plus a `available_date_missing` flag for rows
-  where the date was missing.
-- Dropped `down_payment` / `down_payment_amount` (not used).
+![Egyptian House Price Predictor](docs/screenshots/estimator.png)
 
-## EDA — key insights
+A simple web application where the user selects the **city** and **property type**, enters the **area, bedrooms, and bathrooms**, then receives an estimated listing price in **EGP**.
 
-1. **Price is right-skewed** — most properties cluster at lower prices
-   with a long tail of expensive villas/compounds.
-2. **Location clearly affects price** — average price varies a lot across
-   the top governorates/cities.
-3. **Bedrooms and bathrooms are correlated (~0.77)** — bigger properties
-   tend to have more of both, which is expected but worth keeping in
-   mind for modeling.
-4. The initial `size_sqm` extraction looked broken (near-zero correlation
-   with price) — this was investigated and fixed before using the
-   feature to train the final model.
+---
 
-## Features & target
+## 🎯 Project Overview
 
-- **Features**: `city`, `type` (property type), `size_sqm`, `bedrooms`,
-  `bathrooms` — all things a user can type into a simple form.
-- **Target**: `price`.
+This project turns raw Egyptian real-estate listings into a working Machine Learning web application.
 
-## Model
+The complete workflow is:
 
-- Preprocessing: `OneHotEncoder` on `city` and `type`; `size_sqm`,
-  `bedrooms`, `bathrooms` passed through as-is.
-- Two models were trained and compared:
-  - **Linear Regression** (baseline)
-  - **Random Forest Regressor**
-- **Final model: Random Forest** — chosen for lower MAE and higher R²
-  than the linear baseline.
-
-## Evaluation
-
-- **MAE**: average absolute difference (in EGP) between predicted and
-  actual price — the lower, the closer predictions are to reality on
-  average.
-- **R²**: how much of the variation in price the model explains — closer
-  to 1 is better.
-- (See the notebook's output cell for the exact numbers from this run.)
-
-## Application — how data moves through the app
-
-```
-User fills the form (React)
-   -> POST /api/predict  { city, type, size_sqm, bedrooms, bathrooms }
-   -> Flask backend validates input
-   -> Loads house_price_model.pkl (the saved sklearn Pipeline)
-   -> model.predict(...) -> predicted price
-   -> JSON response { predicted_price, currency }
-   -> React displays "Estimated listing price"
+```text
+Raw Data
+   ↓
+Data Cleaning & EDA
+   ↓
+Feature Selection
+   ↓
+Model Training & Evaluation
+   ↓
+Saved ML Pipeline
+   ↓
+Flask REST API
+   ↓
+React Web App
+   ↓
+Estimated Listing Price
 ```
 
-The dropdown options (cities / property types) are **not hardcoded** —
-the backend reads them directly from the trained `OneHotEncoder`'s
-`categories_`, via `GET /api/options`, so the frontend can never send a
-value the model wasn't trained on.
+### Main Features
 
-## Vibe coding / AI usage
+- 🏙️ City selection
+- 🏢 Property type selection
+- 📐 Area in square meters
+- 🛏️ Bedrooms
+- 🛁 Bathrooms
+- 🤖 Random Forest price prediction
+- ✅ Input validation
+- 🔄 React ↔ Flask REST API
+- 💾 Saved preprocessing + model pipeline
+- 📱 Clean and responsive interface
 
-The notebook (data cleaning, EDA, model training) was built and
-iterated on in Google Colab. The Flask backend and React frontend were
-then generated with AI assistance from the saved model file, with the
-API contract (`/api/predict`, `/api/options`) and input validation
-specified explicitly rather than left to the tool to guess.
+---
 
-**Biggest challenge**: making sure the frontend could never send a
-`city` or `type` value the model hadn't seen during training — solved by
-serving the encoder's own categories as the dropdown source of truth,
-instead of hardcoding a list that could drift out of sync with the
-model.
+## 📊 Dataset
 
-## What I learned
+The project uses the **Egyptian Real Estate Listings** dataset from Kaggle.
 
-1. How a scikit-learn `Pipeline` (preprocessing + model) lets you save
-   and load one artifact and get consistent predictions without
-   re-doing preprocessing by hand.
-2. Why using the median instead of the mean matters when filling missing
-   values in skewed data (like bedroom counts).
-3. How to design a minimal REST contract between a React frontend and a
-   Python ML backend — three small validated endpoints are enough for a
-   working product.
+After removing listings without a target price, the dataset contained **11,441 records**.
 
-## Running the app
+### Target
 
-### Deploy on Render
+```text
+price
+```
 
-The included `render.yaml` deploys the Flask API and React frontend as two
-Render services. Create a new Render Blueprint from this repository and deploy
-it. The frontend uses `VITE_API_BASE` in production and falls back to the local
-Flask URL during development.
+### Final Prediction Features
+
+```text
+city
+type
+size_sqm
+bedrooms
+bathrooms
+```
+
+---
+
+## 🧹 Data Cleaning
+
+The original dataset contained several text-based and inconsistent fields.
+
+Some of the main transformations were:
+
+- Converted `price` from text to numeric.
+- Extracted numeric area from values such as `"Delivery in 2025 / 150 sqm"`.
+- Converted `"3 Bedrooms"` into a numeric bedroom value.
+- Converted bathrooms to numeric values.
+- Parsed `available_from` into year/month/day features.
+- Removed unused columns such as `url`, `down_payment`, and `down_payment_amount`.
+- Handled missing bedroom and bathroom values.
+- Checked for duplicate records.
+
+**Duplicate rows:** `0`
+
+---
+
+# 📈 Exploratory Data Analysis
+
+### 1. Price Distribution
+
+![Price Distribution](docs/screenshots/price-distribution.png)
+
+The price distribution is strongly **right-skewed**, with most listings concentrated at lower prices and fewer high-priced properties.
+
+### 2. Correlation Matrix
+
+![Correlation Matrix](docs/screenshots/correlation-matrix.png)
+
+Some notable relationships:
+
+- Bedrooms ↔ Bathrooms: **0.77**
+- Bedrooms ↔ Price: **0.51**
+- Bathrooms ↔ Price: **0.49**
+
+The analysis also revealed an unexpected issue with the extracted `size_sqm` values, which was investigated during data cleaning.
+
+### 3. Price vs Size
+
+![Price vs Size](docs/screenshots/price-vs-size.png)
+
+This visualization was used to inspect the relationship between property size and listing price and to identify unusual values.
+
+### 4. Average Price by City
+
+![Average Price by City](docs/screenshots/average-price-by-city.png)
+
+Location has a clear effect on average listing prices. In this dataset, **North Coast** listings have the highest average price among the most common locations.
+
+### 5. Average Price by Property Type
+
+![Average Price by Property Type](docs/screenshots/average-price-by-type.png)
+
+Property type also has a strong effect on price. Some less-common property types have much higher average listing prices than typical residential properties.
+
+---
+
+## 🤖 Machine Learning
+
+This is a **Regression** problem.
+
+Two models were compared:
+
+| Model | MAE | R² |
+|---|---:|---:|
+| Linear Regression | 8,651,757 EGP | 0.31 |
+| **Random Forest** | **5,493,875 EGP** | **0.66** |
+
+### 🏆 Final Model
+
+**Random Forest Regressor** was selected because it achieved the lower MAE and higher R².
+
+The final pipeline uses:
+
+```text
+city + type
+      ↓
+OneHotEncoder
+      ↓
+Numerical Features
+      ↓
+Random Forest Regressor
+      ↓
+Estimated Price
+```
+
+The complete trained pipeline is saved as:
+
+```text
+backend/house_price_model.pkl
+```
+
+This keeps preprocessing and prediction together, so the same transformations used during training are applied when the API receives new data.
+
+---
+
+# ⚙️ Application Architecture
+
+```mermaid
+flowchart LR
+    A[User] --> B[React Frontend]
+    B -->|HTTP / REST| C[Flask Backend]
+    C --> D[Saved Scikit-learn Pipeline]
+    D --> E[Random Forest]
+    E --> F[Predicted Price]
+    F --> C
+    C --> B
+    B --> G[Estimated Price in EGP]
+```
+
+### Prediction Request
+
+```json
+{
+  "city": "Cairo",
+  "type": "Apartment",
+  "size_sqm": 150,
+  "bedrooms": 3,
+  "bathrooms": 2
+}
+```
+
+### API Response
+
+```json
+{
+  "predicted_price": 1234567.89,
+  "currency": "EGP"
+}
+```
+
+The number above is only an example of the response format.
+
+---
+
+## 🔌 API
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `GET` | `/api/health` | Check API status |
+| `GET` | `/api/options` | Get available cities & property types |
+| `POST` | `/api/predict` | Generate a price prediction |
+
+The backend validates required fields, categories, numeric values, and reasonable input ranges before making a prediction.
+
+The `/api/options` endpoint reads city and property-type categories directly from the fitted `OneHotEncoder`, keeping the **saved model as the source of truth** instead of hardcoding options in the frontend.
+
+---
+
+## 🧪 Example Test Cases
+
+The application was designed to handle:
+
+- Small properties
+- Medium properties
+- Large properties
+- Missing fields
+- Invalid city/property type
+- Non-numeric values
+- Negative or unrealistic values
+
+Invalid requests return clear API errors instead of crashing the application.
+
+---
+
+## 🛠️ Tech Stack
+
+**Machine Learning**
+- Python
+- Pandas
+- Scikit-learn
+- Random Forest
+- Joblib
 
 **Backend**
+- Flask
+- Flask-CORS
+- REST API
+- Gunicorn
+
+**Frontend**
+- React
+- Vite
+- JavaScript
+- CSS
+
+**Deployment**
+- Render
+- Docker
+
+---
+
+## 📁 Project Structure
+
+```text
+egyptian-house-predictor/
+│
+├── backend/
+│   ├── app.py
+│   ├── house_price_model.pkl
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── docs/
+│   └── screenshots/
+│       ├── estimator.png
+│       ├── price-distribution.png
+│       ├── price-boxplot.png
+│       ├── correlation-matrix.png
+│       ├── price-vs-size.png
+│       ├── average-price-by-city.png
+│       └── average-price-by-type.png
+│
+├── house_price.ipynb
+├── Dockerfile
+├── render.yaml
+└── README.md
+```
+
+---
+
+## ▶️ Run Locally
+
+### Backend
 
 ```bash
 cd backend
 pip install -r requirements.txt
 python app.py
-# runs on http://localhost:5000
 ```
 
-**Frontend** (in a second terminal)
+Backend:
+
+```text
+http://localhost:5000
+```
+
+### Frontend
 
 ```bash
 cd frontend
 npm install
 npm run dev
-# runs on http://localhost:5173
 ```
 
-Open `http://localhost:5173`, fill in the form, and click **Predict
-price**.
+The React application communicates with the Flask API through:
 
-## Testing performed
+```text
+http://localhost:5000/api
+```
 
-- Small property (e.g. 70 sqm, 1 bed, 1 bath)
-- Medium property (e.g. 150 sqm, 3 bed, 2 bath)
-- Large property (e.g. 400 sqm, 6 bed, 5 bath)
-- Missing fields -> clear error message, no crash
-- Unrealistic values (e.g. negative/huge area) -> clear error message,
-  no crash
+---
 
-## Limitations
+## 🤖 AI & Vibe Coding
 
-- Trained on listing data, not sale prices — this is an **estimated
-  listing price**, not an appraisal.
-- Only 5 simple features are used; things like finishing quality,
-  floor, or exact neighborhood aren't captured.
-- Location is limited to the governorates present in the training data.
+AI tools were used as a development accelerator for parts of the frontend, backend, debugging, API integration, and deployment setup.
+
+The ML workflow, preprocessing, model comparison, API flow, and validation were reviewed and understood as part of the project.
+
+> **Use AI to build faster — but understand what you build.**
+
+---
+
+## 💡 Key Takeaways
+
+This project helped me understand how to move from:
+
+**Raw Data → Machine Learning → Saved Model → API → Real Web Application**
+
+The biggest lesson was that **data quality and preprocessing are just as important as choosing the ML model.**
+
+---
+
+## ⚠️ Disclaimer
+
+This application estimates **property listing prices** from historical real-estate listings. It is an educational project and should not be considered an official property valuation or guaranteed market price.
