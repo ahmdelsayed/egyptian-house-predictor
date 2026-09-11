@@ -21,7 +21,11 @@ from flask_cors import CORS
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "house_price_model.pkl")
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_folder=os.path.join(os.path.dirname(__file__), "static"),
+    static_url_path="",
+)
 CORS(app)  # allow the React dev server (different port) to call this API
 
 # ---------------------------------------------------------------------------
@@ -100,6 +104,15 @@ def predict():
         "predicted_price": round(float(prediction), 2),
         "currency": "EGP",
     })
+
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def frontend(path):
+    file_path = os.path.join(app.static_folder, path)
+    if path and os.path.isfile(file_path):
+        return app.send_static_file(path)
+    return app.send_static_file("index.html")
 
 
 if __name__ == "__main__":
