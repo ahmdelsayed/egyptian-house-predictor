@@ -367,10 +367,3 @@ The biggest lesson was that **data quality and preprocessing are just as importa
 ## ⚠️ Disclaimer
 
 This application estimates **property listing prices** from historical real-estate listings. It is an educational project and should not be considered an official property valuation or guaranteed market price.
-
----
-
-## 👨‍💻 Author
-
-**Ahmed Elsayed**  
-Information Technology & Computer Science Student
