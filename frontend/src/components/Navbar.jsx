@@ -51,9 +51,9 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:block">
-          <Button as="a" href="tel:01098765432" variant="gold" size="sm">
+          <Button as="a" href="tel:01000000000" variant="gold" size="sm">
             <Phone className="h-4 w-4" />
-            01098765432
+            01000000000
           </Button>
         </div>
 
@@ -82,11 +82,11 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="tel:01098765432"
+              href="tel:01000000000"
               className="flex items-center gap-2 text-base font-semibold text-gold-bright"
             >
               <Phone className="h-4 w-4" />
-              01098765432
+              01000000000
             </a>
           </div>
         </div>
