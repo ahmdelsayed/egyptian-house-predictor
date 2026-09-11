@@ -71,9 +71,9 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="mt-6 max-w-xl text-lg leading-relaxed text-papyrus/75"
         >
-          Mountain View Egypt builds low-density villas and courtyard homes across Egypt's
-          growing desert communities. Before you visit, get a grounded sense
-          of what a property like yours is really worth.
+          Explore low-density villas and courtyard homes across Egypt's growing
+          desert communities. Before you visit, get a grounded sense of what a
+          property like yours is really worth.
         </motion.p>
 
         <motion.div

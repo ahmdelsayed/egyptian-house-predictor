@@ -59,8 +59,8 @@ export default function Communities() {
             Four settings, one way of building.
           </h2>
           <p className="mt-5 text-[15px] leading-relaxed text-ink-soft">
-            Every Mountain View Egypt community keeps the same low density and shared green
-            space, wherever in Egypt it sits.
+            Every community keeps the same low density and shared green space,
+            wherever in Egypt it sits.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export default function Communities() {
               <div className="h-40 w-full overflow-hidden">
                 <img
                   src={c.image}
-                  alt={`${c.name} community by Mountain View Egypt`}
+                  alt={`${c.name} community`}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />

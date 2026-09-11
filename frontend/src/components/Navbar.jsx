@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Phone, Menu, X } from "lucide-react";
 import Button from "./ui/Button.jsx";
-import logo from "../../image.png";
 
 const NAV_LINKS = [
   { label: "Home", href: "#home" },
@@ -12,12 +11,8 @@ const NAV_LINKS = [
 
 function Wordmark() {
   return (
-    <a href="#home" aria-label="Mountain View Egypt home">
-      <img
-        src={logo}
-        alt="Mountain View Egypt"
-        className="h-10 w-auto"
-      />
+    <a href="#home" className="font-display text-xl font-medium text-papyrus" aria-label="House Price Predictor home">
+      House Price Predictor
     </a>
   );
 }
@@ -56,9 +51,9 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:block">
-          <Button as="a" href="tel:19201" variant="gold" size="sm">
+          <Button as="a" href="tel:01098765432" variant="gold" size="sm">
             <Phone className="h-4 w-4" />
-            19201
+            01098765432
           </Button>
         </div>
 
@@ -87,11 +82,11 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="tel:19201"
+              href="tel:01098765432"
               className="flex items-center gap-2 text-base font-semibold text-gold-bright"
             >
               <Phone className="h-4 w-4" />
-              19201
+              01098765432
             </a>
           </div>
         </div>
