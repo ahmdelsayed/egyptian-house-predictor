@@ -15,14 +15,17 @@
 
 ---
 
-## 🌐 Live Demo
+## 🌐 Project Links
 
-**Live App:** `https://egyptian-house-predictor.vercel.app`  
-**Google Colab:** `YOUR_COLAB_LINK`
+- 🚀 **[Live App](https://egyptian-house-predictor.vercel.app/)**
+- 📓 **[ML Notebook](backend/house_price.ipynb)** — Data cleaning, EDA, model training & evaluation
+- 📊 **[Dataset — Egyptian Real Estate Listings](https://www.kaggle.com/datasets/hassankhaled21/egyptian-real-estate-listings)**
+
+---
 
 ## 📸 App Preview
 
-![Egyptian House Price Predictor](docs/screenshots/estimator.png)
+<img src="backend/photos/App%20Preview%20Egyptian%20House%20Price.png" alt="Egyptian House Price Predictor" width="900">
 
 A simple web application where the user selects the **city** and **property type**, enters the **area, bedrooms, and bathrooms**, then receives an estimated listing price in **EGP**.
 
@@ -31,8 +34,6 @@ A simple web application where the user selects the **city** and **property type
 ## 🎯 Project Overview
 
 This project turns raw Egyptian real-estate listings into a working Machine Learning web application.
-
-The complete workflow is:
 
 ```text
 Raw Data
@@ -95,8 +96,6 @@ bathrooms
 
 The original dataset contained several text-based and inconsistent fields.
 
-Some of the main transformations were:
-
 - Converted `price` from text to numeric.
 - Extracted numeric area from values such as `"Delivery in 2025 / 150 sqm"`.
 - Converted `"3 Bedrooms"` into a numeric bedroom value.
@@ -114,13 +113,13 @@ Some of the main transformations were:
 
 ### 1. Price Distribution
 
-![Price Distribution](docs/screenshots/price-distribution.png)
+<img src="backend/photos/Distribution%20of%20House%20Prices.jpeg" alt="Price Distribution" width="850">
 
 The price distribution is strongly **right-skewed**, with most listings concentrated at lower prices and fewer high-priced properties.
 
 ### 2. Correlation Matrix
 
-![Correlation Matrix](docs/screenshots/correlation-matrix.png)
+<img src="backend/photos/Correlation%20Matrix.jpeg" alt="Correlation Matrix" width="850">
 
 Some notable relationships:
 
@@ -132,21 +131,21 @@ The analysis also revealed an unexpected issue with the extracted `size_sqm` val
 
 ### 3. Price vs Size
 
-![Price vs Size](docs/screenshots/price-vs-size.png)
+<img src="backend/photos/Price%20vs%20Size.jpeg" alt="Price vs Size" width="850">
 
 This visualization was used to inspect the relationship between property size and listing price and to identify unusual values.
 
 ### 4. Average Price by City
 
-![Average Price by City](docs/screenshots/average-price-by-city.png)
+<img src="backend/photos/Average%20Price%20by%20City%20(Top%2010%20most%20common).jpeg" alt="Average Price by City" width="850">
 
-Location has a clear effect on average listing prices. In this dataset, **North Coast** listings have the highest average price among the most common locations.
+Location has a clear effect on average listing prices. The chart shows the average prices for the top 10 most common cities/locations in the dataset.
 
 ### 5. Average Price by Property Type
 
-![Average Price by Property Type](docs/screenshots/average-price-by-type.png)
+<img src="backend/photos/Average%20Price%20by%20Property%20Type.jpeg" alt="Average Price by Property Type" width="850">
 
-Property type also has a strong effect on price. Some less-common property types have much higher average listing prices than typical residential properties.
+Property type also has a strong effect on listing price, with noticeable differences between residential categories.
 
 ---
 
@@ -242,13 +241,11 @@ The `/api/options` endpoint reads city and property-type categories directly fro
 
 ---
 
-## 🧪 Example Test Cases
+## 🧪 Testing
 
 The application was designed to handle:
 
-- Small properties
-- Medium properties
-- Large properties
+- Small, medium, and large properties
 - Missing fields
 - Invalid city/property type
 - Non-numeric values
@@ -293,24 +290,21 @@ egyptian-house-predictor/
 ├── backend/
 │   ├── app.py
 │   ├── house_price_model.pkl
-│   └── requirements.txt
+│   ├── house_price.ipynb
+│   ├── requirements.txt
+│   └── photos/
+│       ├── App Preview Egyptian House Price.png
+│       ├── Distribution of House Prices.jpeg
+│       ├── Correlation Matrix.jpeg
+│       ├── Price vs Size.jpeg
+│       ├── Average Price by City (Top 10 most common).jpeg
+│       └── Average Price by Property Type.jpeg
 │
 ├── frontend/
 │   ├── src/
 │   ├── public/
 │   └── package.json
 │
-├── docs/
-│   └── screenshots/
-│       ├── estimator.png
-│       ├── price-distribution.png
-│       ├── price-boxplot.png
-│       ├── correlation-matrix.png
-│       ├── price-vs-size.png
-│       ├── average-price-by-city.png
-│       └── average-price-by-type.png
-│
-├── house_price.ipynb
 ├── Dockerfile
 ├── render.yaml
 └── README.md
@@ -373,3 +367,10 @@ The biggest lesson was that **data quality and preprocessing are just as importa
 ## ⚠️ Disclaimer
 
 This application estimates **property listing prices** from historical real-estate listings. It is an educational project and should not be considered an official property valuation or guaranteed market price.
+
+---
+
+## 👨‍💻 Author
+
+**Ahmed Elsayed**  
+Information Technology & Computer Science Student
