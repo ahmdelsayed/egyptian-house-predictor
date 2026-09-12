@@ -8,7 +8,9 @@ import Button from "./ui/Button.jsx";
 
 const API_BASE =
   import.meta.env.VITE_API_BASE ||
-  (import.meta.env.PROD ? "/api" : "http://localhost:5000/api");
+  (import.meta.env.PROD
+    ? "https://ahmdelsayed.pythonanywhere.com/api"
+    : "http://localhost:5000/api");
 
 const EMPTY_FORM = {
   city: "",
