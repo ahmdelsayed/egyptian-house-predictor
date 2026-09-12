@@ -11,6 +11,7 @@ FROM python:3.12-slim
 WORKDIR /app
 COPY backend/requirements.txt ./backend/requirements.txt
 RUN pip install --no-cache-dir -r backend/requirements.txt
+RUN pip install --no-cache-dir --no-deps catboost==1.2.8
 COPY backend/ ./backend/
 COPY --from=frontend-build /build/frontend/dist ./backend/static
 

@@ -348,8 +348,9 @@ http://localhost:5000/api
 
    ```bash
    cd ~/egyptian-house-predictor/backend
-   mkvirtualenv --python=/usr/bin/python3.12 egyptian-house
+   mkvirtualenv --python=/usr/bin/python3.10 egyptian-house
    pip install -r requirements.txt
+   pip install --no-cache-dir --no-deps catboost==1.2.8
    ```
 
 3. In the Web tab, set the virtualenv to `egyptian-house`.
