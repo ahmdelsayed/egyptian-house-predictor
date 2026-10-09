@@ -60,7 +60,7 @@ Estimated Listing Price
 - 📐 Area in square meters
 - 🛏️ Bedrooms
 - 🛁 Bathrooms
-- 🤖 CatBoost price prediction using the saved `best_catboost_model.pkl`
+- 🤖 Random Forest price prediction using the saved `house_price_model.pkl`
 - ✅ Input validation
 - 🔄 React ↔ Flask REST API
 - 💾 Saved model with API-side feature construction
@@ -162,7 +162,7 @@ Two models were compared:
 
 ### 🏆 Final Model
 
-**Random Forest Regressor** was selected because it achieved the lower MAE and higher R².
+**Random Forest Regressor** was selected because it achieved the lower MAE and higher R². The committed model was trained with scikit-learn 1.6.1 and predicts the original `price` value in EGP directly.
 
 The final pipeline uses:
 
@@ -260,7 +260,7 @@ Invalid requests return clear API errors instead of crashing the application.
 **Machine Learning**
 - Python
 - Pandas
-- CatBoost
+- scikit-learn (Random Forest)
 - Joblib
 
 **Backend**
@@ -288,9 +288,10 @@ egyptian-house-predictor/
 │
 ├── backend/
 │   ├── app.py
-│   ├── best_catboost_model.pkl
+│   ├── house_price_model.pkl
 │   ├── house_price.ipynb
 │   ├── requirements.txt
+│   ├── wsgi.py
 │   └── photos/
 │       ├── App Preview Egyptian House Price.png
 │       ├── Distribution of House Prices.jpeg
@@ -305,7 +306,6 @@ egyptian-house-predictor/
 │   └── package.json
 │
 ├── Dockerfile
-├── render.yaml
 └── README.md
 ```
 
@@ -317,7 +317,7 @@ egyptian-house-predictor/
 
 ```bash
 cd backend
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 python app.py
 ```
 
@@ -335,26 +335,21 @@ npm install
 npm run dev
 ```
 
-The React application communicates with the Flask API through:
+The React application communicates with the Flask API at `http://localhost:5000/api`. For a production frontend, set `VITE_API_BASE` to the full API base URL (for example, `https://ahmdelsayed.pythonanywhere.com/api`) before building.
 
-```text
-http://localhost:5000/api
-```
-
-### PythonAnywhere deployment
+### Deploying the backend to PythonAnywhere
 
 1. Upload or clone the repository into your PythonAnywhere account.
 2. Create a Python 3.12 virtualenv and install the backend dependencies:
 
    ```bash
    cd ~/egyptian-house-predictor/backend
-   mkvirtualenv --python=/usr/bin/python3.10 egyptian-house
+   mkvirtualenv --python=/usr/bin/python3.12 egyptian-house
    pip install -r requirements.txt
-   pip install --no-cache-dir --no-deps catboost==1.2.8
    ```
 
 3. In the Web tab, set the virtualenv to `egyptian-house`.
-4. Set the WSGI file to import the project WSGI module. Replace the generated file with:
+4. Set the WSGI file to import the project's WSGI module. Replace the generated file with:
 
    ```python
    import sys
@@ -362,11 +357,11 @@ http://localhost:5000/api
    from wsgi import app
    ```
 
-5. Reload the web app and verify `https://ahmdelsayed.pythonanywhere.com/api/health` returns `{"status":"ok"}`.
+5. Reload the web app and verify `https://ahmdelsayed.pythonanywhere.com/api/health` returns `{"status":"ok"}`. The model file must be present at `backend/house_price_model.pkl`.
 
 ### Vercel deployment
 
-Set `VITE_API_BASE` to `https://ahmdelsayed.pythonanywhere.com/api` in the Vercel project environment variables, then redeploy. The frontend has the same value as a production fallback, but setting the variable explicitly is recommended.
+Set the Vercel project's **Root Directory** to `frontend` and its **Build Command** to `npm run build`. Add `VITE_API_BASE` with the value `https://ahmdelsayed.pythonanywhere.com/api` under **Settings → Environment Variables**, then redeploy. The backend must be deployed and pass its `/api/health` check for predictions to work.
 
 ---
 
