@@ -9,7 +9,6 @@
   <img src="https://img.shields.io/badge/Python-3.x-blue?logo=python" alt="Python">
   <img src="https://img.shields.io/badge/React-Vite-61DAFB?logo=react" alt="React">
   <img src="https://img.shields.io/badge/Flask-REST%20API-black?logo=flask" alt="Flask">
-  <img src="https://img.shields.io/badge/Scikit--learn-ML-F7931E?logo=scikitlearn" alt="Scikit-learn">
   <img src="https://img.shields.io/badge/Model-Random%20Forest-2E8B57" alt="Random Forest">
 </p>
 
